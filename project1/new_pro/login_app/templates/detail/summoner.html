@@ -1,0 +1,105 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        .s_1{
+            width: 620px;
+        }
+        .s_2{
+            margin: 15px 0 ;
+            line-height: 40px;
+            position: relative;
+        }
+        .s_3{
+            width: 118px;
+            height: 38px;
+            border-radius:5px ;
+        }
+        .s_2 input{
+            box-sizing: content-box;
+            width: 482px;
+            line-height:35px ;
+            border-radius: 5px;
+            vertical-align: 2px;
+            padding-left: 15px;
+        }
+        .select{
+            width: 160px;
+            line-height: 32px;
+            padding-left: 5px;
+            vertical-align: 2px;
+        }
+        .s_4{
+            background-color: #fffff1;
+            list-style: none;
+            position: absolute;
+            top:42px;
+            left: 120px;
+        }
+        .s_4 a{
+            text-decoration: none;
+            font-size: 15px;
+            color: gold;
+            display: block;
+            width: 152px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .s_4 li{
+            background-color: #99538d;
+            border: 1px solid white;
+            height:  30px;
+        }
+        .s_7{
+            display: none;
+            z-index: 120;
+        }
+        .s_8{
+            display: none;
+            z-index: 120;
+        }
+        .s_10{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="s_1">
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="s_2">
+                <button class="s_3">召唤师学号</button><input type="text" placeholder="召唤师学号" name="s_id">
+            </div>
+            <div class="s_2">
+                <button class="s_3">召唤师名称</button><input type="text" placeholder="召唤师名称" name="s_name">
+            </div>
+            <div class="s_2">
+                <button class="s_3">召唤师麦段</button><input type="text" placeholder="召唤师麦段" name="s_tel">
+            </div>
+            <div class="s_2 s_5">
+                <button class="s_3">召唤师性别</button><button type="button" class="select" id="gender">请选择</button>
+                <ul class="s_4 s_7">
+                    <li><a href="#">男</a></li>
+                    <li><a href="#">女</a></li>
+                </ul>
+            </div>
+            <div class="s_2 s_6">
+                <button class="s_3">战斗学宫</button><button type="button" class="select"  id="study">请选择</button>
+                <ul class="s_4 s_8" id="get_room">
+                </ul>
+            </div>
+            <div class="s_2 s_10">
+                <input type="submit" value="提交" id="ti_jiao">
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

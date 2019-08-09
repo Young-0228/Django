@@ -1,0 +1,235 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <style>
+            *{
+                padding: 0;
+                margin: 0;
+            }
+            .cla{
+                position: absolute;
+                left: 30px;
+                top: 30px;
+                width: 650px;
+            }
+            .cla5{
+                display: inline-block;
+                width: 200px;
+                line-height: 50px;
+                border: 2px solid #99538d;
+                text-align: center;
+                border-radius: 10px;
+            }
+            .cla5 a{
+                text-decoration: none;
+                font-size: 22px;
+                color: gold;
+            }
+            #action{
+                box-shadow:inset 0 0 30px #99597e;
+            }
+            body{
+                background: url("{% static 'img/0.jpg' %}");
+            }
+            .cla2{
+                background: url("{% static 'img/1.jpg' %}");
+                background-size:50% ;
+            }
+            .cla3{
+                background: url("{% static 'img/2.jpg' %}");
+                background-size:50% ;
+            }
+            .cla4{
+                background: url("{% static 'img/3.jpg' %}");
+                background-size:30% ;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="cla">
+            <div class="cla1">
+                <div class="cla2 cla5" id="action"><a href="#">召唤师</a></div>
+                <div class="cla3 cla5"><a href="#">秘境试炼</a></div>
+                <div class="cla4 cla5"><a href="#">召唤师峡谷</a></div>
+            </div>
+            <div class="cla6">
+                <!--添加模板-->
+                {% include 'detail/summoner.html' %}
+            </div>
+        </div>
+        <!--导入报错信息公共模板-->
+        {% include 'tips.html' %}
+    </body>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <!--导入自定义的js-->
+    <script src="{% static  'js/login.js' %}"></script>
+    <script>
+//        <!--默认添加模板的js-->
+            ajax_request("{% url 'get_room_name' %}","get"," ",function (res) {
+//                         res = JSON.parse(res)
+//            console.log(res);
+            for (var i = 0; i < res.length; i++) {
+                $("#get_room").append(`<li><a>${res[i]}</a></li>`)
+            }
+            study_func();
+            })
+            $("#ti_jiao").on("click",function () {
+//                    获取数据
+                    event.preventDefault();
+                    paras = $("form").serialize();
+    //                添加性别和学宫
+                    paras +=("&gender="+$("#gender").text()+"&study="+$("#study").text())
+                        console.log(paras)
+                        ajax_request("{% url 'add_student' %}","post",paras,function (res) {
+                            animate_func(res.msg)
+                        })
+            })
+
+//        <!--定义每个按钮，不同样式变换-->
+        $(".cla5").on("click",function () {
+//            删掉属性
+            $(".cla5").removeAttr("id");
+//            给当前所点击按钮添加id
+            $(this).attr("id","action");
+//            获取当前点击的标签文字
+            page = $(this).text()
+            if(page == "召唤师") {
+                var str = `{% include 'detail/summoner.html' %}`;
+                $('.cla6').empty().append(str);
+                ajax_request("{% url 'get_room_name' %}", "get", " ", function (res) {
+//                         res = JSON.parse(res)
+//                    console.log(res);
+                    for (var i = 0; i < res.length; i++) {
+                        $("#get_room").append(`<li><a>${res[i]}</a></li>`)
+                    }
+                    study_func();
+                })
+                $("#ti_jiao").on("click",function () {
+//                    获取数据
+                    event.preventDefault();
+                    paras = $("form").serialize();
+    //                添加性别和学宫
+                    paras +=("&gender="+$("#gender").text()+"&study="+$("#study").text())
+                        console.log(paras)
+                        ajax_request("{% url 'add_student' %}","post",paras,function (res) {
+                            animate_func(res.msg)
+                        })
+            })
+            }else if(page == "秘境试炼"){
+                var str = `{% include 'detail/secret_territory.html' %}`
+                $('.cla6').empty().append(str)
+
+                ajax_request("{% url 'get_hero' %}","get",'',function (res) {
+                        console.log(res);
+                        for (var i=0;i<res.length;i++){
+                            $("#get_heros").append(`<li><a>${res[i]}</a></li>`)
+                        }
+                    study_func();
+                })
+//                提交数据给服务器
+                $("input[type=submit]").on("click",function () {
+                    event.preventDefault()
+                    paras = $("form").serialize()
+                    paras += ("&gender="+$("#gender").text() +"&study="+$("#study").text())
+                    console.log(paras)
+                    ajax_request("{% url 'add_course' %}","post",paras,function (res) {
+                        animate_func(res.msg)
+                    })
+
+                })
+
+            }else{
+               var str = `{% include 'detail/summoner_canyan.html' %}`
+                $('.cla6').empty().append(str)
+
+                ajax_request("{% url 'get_name_class' %}","get"," ",function (res) {
+                    for(var i=0;i<res.length;i++){
+                        $("#get_name_class").append(`<li><a>${res[i]}</a></li>`)
+                    }
+//                    添加点击事件
+                         var num1 = 0
+                $("#study").on("click",function () {
+
+                    if(num1==0){
+                    $('.s_8').css({display:'block'})
+                        num1++;
+                    } else{
+                    $('.s_8').css({display:'none'});
+                    num1=0
+                    }
+                    $("#get_cla").css({
+                            display:"none"
+                        })
+                    $(".s_8 a").on("click",function () {
+                        var txt = $(this).text();
+                        $(this).parents(".s_6").find("#study").html(txt);
+                        $("#strong_tea").css({
+                            display:"block"
+                        })
+                        $("#get_cla").css({
+                            display:"none"
+                        })
+                        paras = "&study="+$("#study").text();
+                        console.log(paras)
+                         ajax_request("{% url 'get_tea_name' %}","get",paras,
+                                function (res) {
+                             console.log(res)
+                            $("#get_cla").empty()
+                             for(var j=0;j<res.length;j++){
+                                $("#get_cla").append(`<li><a>${res[j]['name']}(${res[j]['id']})</a></li>`)
+                             }
+                             var num2 = 0
+                            $("#study1").on("click",function () {
+
+                                if(num2==0){
+                                $('#get_cla').css({display:'block'})
+                                    num2++;
+                                } else{
+                                $('#get_cla').css({display:'none'});
+                                num2=0
+                                }
+                                $("#get_cla a").on("click",function () {
+                                    var txt = $(this).text();
+                                    $(this).parents("#strong_tea").find("#study1").html(txt);
+                                });
+
+                            })
+                            })
+
+                    });
+
+                })
+
+//                    用ajax添加数据库
+                    $("input[type=submit]").on("click",function () {
+                        event.preventDefault();
+                       paras =  $("form").serialize()
+//                        用拼接方式，添加数据
+                        paras += ("&study="+$("#study").text()+"&study1="+$("#study1").text())
+                        console.log(paras)
+                        ajax_request("{% url 'add_classroom' %}","post",paras,function (res) {
+                            animate_func(res.msg)
+                        })
+
+                    })
+
+
+
+
+                })
+
+            }
+
+        })
+//            获取召唤师提交按钮
+
+
+
+
+</script>
+
+
+</html>

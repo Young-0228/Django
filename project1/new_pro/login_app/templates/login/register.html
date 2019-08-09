@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE html>
+<html >
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--<link rel="stylesheet" href="{% static 'css/login.css' %}">-->
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .bgc{
+            background: url({% static 'img/register.jpg' %});
+            background-size: 100%;
+        }
+        .cla{
+            position: absolute;
+            left: 100px;
+            top: 100px;
+            background-color:rgba(16,16,16,0.6);
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+        }
+        .cla2{
+            border-left: 5px solid rebeccapurple ;
+            position: absolute;
+            top: 140px;
+            left:100px;
+        }
+        .cla2 input{
+            border: 1px solid rgba(0,0,0,0.2);
+            width: 200px;
+            height: 30px;
+            font-size: 20px;
+            padding-left: 5px;
+        }
+        .cla3{
+            position: absolute;
+            left: 105px;
+            top: 220px;
+        }
+        .cla3 input{
+            width: 206px;
+            height: 30px;
+        }
+        .cla4 {
+            position: absolute;
+            top: 260px;
+            left: 200px;
+        }
+        a{
+            color: rgb(73,67,68);
+            padding: 0 10px;
+            font-size: 10px;
+        }
+        .a1{
+            border-right: 1px solid rgb(93,117,128);
+
+        }
+        .cla5{
+            border-left: 5px solid deepskyblue ;
+            position: absolute;
+            left: 100px;
+            top: 180px;
+        }
+        .cla5 input{
+            border: 1px solid rgba(0,0,0,0.4);
+            width: 200px;
+            height: 30px;
+            font-size: 20px;
+            padding-left: 5px;
+        }
+
+    </style>
+</head>
+<body class="bgc">
+    <div class="cla">
+        <!--引入公共模板文件，可以添加多个参数：title=参数名的方式，注意等号两边不能有空格-->
+        {% include "head.html" with title="超神学院招生" %}
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="cla2">
+                <input type="text" name="username" placeholder="账号">
+            </div>
+            <div class="cla5">
+                <input type="password" name="password" placeholder="密码">
+            </div>
+            <div class="cla3">
+                <input type="submit" value="注册">
+            </div>
+            <div class="cla4">
+                <a href="{% url 'login' %}" class="a1">登录</a>
+                <a href="#" class="a2">忘记密码</a>
+            </div>
+        </form>
+    </div>
+    {% include 'tips.html' %}
+</body>
+<script src="{% static 'js/jquery.min.js' %} "></script>
+<script>
+//        获取form表单点击事件
+        $("input[type='submit']").on("click",function () {
+//          组止默认链接
+            event.preventDefault();
+//            序列化数据 ,获取所有表单中需要提交的数据
+            paras = $("form").serialize();
+            $.ajax({
+//               路径
+                url:"{% url 'add_data' %}",
+//                类型
+                type:"post",
+//                数据
+                data:paras,
+//                操作成功
+                success:function (res) {
+//                    调用函数,res转成对象
+                   res  = JSON.parse(res);
+                   if(res.code == 200){
+//                       注册成功，页面跳转，
+                       animate_func(res.msg);
+                       window.location.href="{% url 'login' %}"
+                   }else {
+//                       报错信息
+                       animate_func(res.msg)
+                   }
+                }
+            })
+        })
+</script>
+</html>

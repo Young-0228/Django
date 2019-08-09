@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #cla6{
+            background-color: #fffff1;
+            line-height: 26px;
+            position: absolute;
+            left: 227px;
+            top: 210px;
+            text-align: center;
+            display: none;
+            background: rgb(207,232,252);
+        }
+    </style>
+</head>
+<body>
+    <div id="cla6">
+        报错信息
+    </div>
+</body>
+<script src="{% static 'js/jquery.min.js' %} "></script>
+    <script>
+//        <!--动态显示，错误信息提示-->
+        var animate_func = function (msg) {
+//               显示隐藏框
+            cla6.style.display="block";
+//            相同于innerHtml传值
+            cla6.innerHTML=msg;
+//            透明度,定义一次显示函数
+            var timer = setTimeout(function () {
+//                定义透明度
+                var opacity_num = 1.0;
+                var time1 = setInterval(function () {
+                   opacity_num -= 0.1;
+                   cla6.style.background=`rgba(207,232,252,${opacity_num})`
+                    if(opacity_num<=0){
+//                       清楚计数器
+                        clearInterval(time1);
+                        cla6.style.background="rgba(,0,0,1)"
+                        cla6.style.display = "none"
+                    }
+                },100)
+            },1000)
+        }
+    </script>
+</html>
